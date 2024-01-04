@@ -1,0 +1,25 @@
+import { Schema, model, models } from "mongoose";
+
+const UserSchema = new Schema({
+    email: {
+        type: String,
+        unique: [true, 'Email already exists!'],
+        required: [true, 'Email is required!']
+    },
+    username: {
+        type: String,
+        unique: [true, 'Username already exists!'],
+        required: [true, 'Username is required!'],
+        match: [/^(?=.{5,30}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/, "Username invalid, it should contain 5-30 alphanumeric letters and be unique!"]
+    },
+    image: {
+        type: String
+    }
+})
+
+//Check if the user model already exists on Mongoose. 
+// If it does, set it to the User object. 
+// If it does not, create a new model called User, using the schema we outlined
+const User = models.User || model("User", UserSchema);
+
+export default User;
